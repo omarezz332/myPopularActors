@@ -19,7 +19,14 @@ class PopularRepositoryProvider extends ChangeNotifier {
   PopularRepositoryProvider(this._popularRepository);
 
   List<PopularPerson> _popularPerson = [];
+  int _page = 1;
+ void morePages(){
+   if(_page<=500){
+     _page++;
+   }
 
+ }
+int get page => _page;
   List<PopularPerson> get populars => _popularPerson;
 
   void updatePosts(List<PopularPerson> populars) {

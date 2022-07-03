@@ -29,7 +29,7 @@ class PopularNotifier extends StateNotifier<PopularState> {
     state=  const PopularLoading();
     //check connection and if there no internet we will get our data from local storage
     if(await CheckInternet.checkInternetConnection()){
-      PopularPerson popularPerson= await _api.getPopulars();
+      PopularPerson popularPerson= await _api.getPopulars(_popularProvider.page);
       await _popularProvider.setPopular(popularPerson);
 
     }
@@ -40,6 +40,13 @@ class PopularNotifier extends StateNotifier<PopularState> {
     }
     state = const PopularGot();
 
+  }
+  Future<void> getMorePopulars() async {
+    state = const PopularLoading();
+    _popularProvider.morePages();
+    PopularPerson popularPerson= await _api.getPopulars(_popularProvider.page);
+    await _popularProvider.setPopular(popularPerson);
+    state = const PopularGot();
   }
 
 }

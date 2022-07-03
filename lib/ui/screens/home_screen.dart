@@ -193,11 +193,21 @@ if(once){
             );
           },
         ),
-        ElevatedButton.icon(onPressed:(){
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ElevatedButton.icon(onPressed:(){
+getMorePopulars();
 
 
-        }, icon: , label: ),
+            }, icon:const Icon(Icons.assured_workload) , label:Text("Load More.." ,)),
+          ],
+        ),
       ],
     );
  }
+  getMorePopulars(){
+    ref.read(popularNotifierProvider.notifier).getMorePopulars();
+  }
 }

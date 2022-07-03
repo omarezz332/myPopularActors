@@ -6,7 +6,7 @@ import '../../../models/core/popular_person.dart';
 
 
 abstract class IPopularApi {
-  Future<PopularPerson> getPopulars();
+  Future<PopularPerson> getPopulars(int page);
   Future<PersonDetails> getPopularsDetails(int personId);
   Future<PopularImage> getPopularsImage(int personId);
 

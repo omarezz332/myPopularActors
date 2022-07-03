@@ -17,8 +17,8 @@ class PopularApi implements IPopularApi {
 
   PopularApi();
   @override
-  Future<PopularPerson> getPopulars()async {
-    final url = Uri.parse(kAllPopular);
+  Future<PopularPerson> getPopulars(int page)async {
+    final url = Uri.parse(kAllPopular(page));
     final response = await http.get(url);
     final popularPerson = PopularPerson.fromJson(json.decode(response.body) as Map<String, dynamic>);
   return popularPerson;
