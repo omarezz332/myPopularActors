@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_poupular_actors/data/local/interfaces/i_popular_repository.dart';
@@ -7,14 +9,14 @@ import '../../data/local/repositories/posts_repository.dart';
 
 
 
-final postsRepositoryProvider = ChangeNotifierProvider(
-      (ref) => PostsRepositoryProvider(ref.read(postsRepository)),
+final popularsRepositoryProvider = ChangeNotifierProvider(
+      (ref) => PopularRepositoryProvider(ref.read(popularRepository)),
 );
 
-class PostsRepositoryProvider extends ChangeNotifier {
+class PopularRepositoryProvider extends ChangeNotifier {
   final IPopularRepository _popularRepository;
 
-  PostsRepositoryProvider(this._popularRepository);
+  PopularRepositoryProvider(this._popularRepository);
 
   List<PopularPerson> _popularPerson = [];
 
@@ -25,25 +27,26 @@ class PostsRepositoryProvider extends ChangeNotifier {
     _popularPerson = populars;
   }
 
-  Future<List<PopularPerson>> getPopulars() async {
+  Future<void> getPopulars() async {
+    log("tryGetPopulars");
     final repositoryPopulars = await _popularRepository.getPopular();
+    log("getPopulars ${repositoryPopulars.length}");
     if (repositoryPopulars != '') {
       _popularPerson = repositoryPopulars;
-      return _popularPerson;
     }
-    return [];
   }
 
   Future setPopular(PopularPerson populars) async {
     if (_popularPerson.isEmpty) {
       _popularPerson = [];
       _popularPerson.add(populars);
-      notifyListeners();
+
     }
     else {
       _popularPerson.add(populars);
-      notifyListeners();
+
     }
+    notifyListeners();
     await _popularRepository.setPopular(_popularPerson);
   }
 }

@@ -10,14 +10,14 @@ import '../../../helpers/storage_keys.dart';
 import '../interfaces/i_popular_repository.dart';
 
 
-final postsRepository = Provider<IPopularRepository>((ref) =>
-    PostsRepository());
+final popularRepository = Provider<IPopularRepository>((ref) =>
+    PopularRepository());
 
-class PostsRepository implements IPopularRepository {
+class PopularRepository implements IPopularRepository {
   final FlutterSecureStorage _secureStorage;
 
   //* Constructor
-  PostsRepository() : _secureStorage = const FlutterSecureStorage();
+  PopularRepository() : _secureStorage = const FlutterSecureStorage();
 
   @override
   Future<List<PopularPerson>> getPopular() async {
@@ -27,16 +27,16 @@ class PostsRepository implements IPopularRepository {
       if (hasKey) {
         final String? _posts = await _secureStorage.read(key: kPopular);
         log("hasPosts: $_posts");
-        final Map<String, dynamic> extractedData = json.decode(_posts!);
-        debugPrint("hasPosts: $extractedData");
-        extractedData.forEach((key, value) {
-          popularPerson.add(PopularPerson.fromJson(value));
-          });
+        final List<dynamic> extractedData = json.decode(_posts!);
+      //  debugPrint("hasPosts: $extractedData");
+        extractedData.forEach((element) {
+          popularPerson.add(PopularPerson.fromJson(element));
+        });
         return popularPerson;
       }
       return [];
     } on PlatformException {
-      await _secureStorage.delete(key: kPopular);
+      //await _secureStorage.delete(key: kPopular);
     } catch (e) {
       debugPrint(e.toString());
     } finally {
