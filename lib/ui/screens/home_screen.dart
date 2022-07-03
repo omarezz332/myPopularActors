@@ -18,54 +18,59 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
-
   @override
   ConsumerState<HomeScreen> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends ConsumerState<HomeScreen> {
-  var state ;
-   List<PopularPerson> popularPersons=[] ;
+  var state;
 
-  bool once=true;
+  List<PopularPerson> popularPersons = [];
+
+  bool once = true;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   void didChangeDependencies() {
-if(once){
-   ref.read(popularNotifierProvider.notifier).init();
+    if (once) {
+      ref.read(popularNotifierProvider.notifier).init();
 
-  state=ref.read(popularNotifierProvider.notifier).state;
- // popularPersons=ref.read(popularNotifierProvider.notifier).popularPerson;
-  once=false;
-}  super.didChangeDependencies();
+      state = ref.read(popularNotifierProvider.notifier).state;
+      // popularPersons=ref.read(popularNotifierProvider.notifier).popularPerson;
+      once = false;
+    }
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    popularPersons= ref.watch(popularsRepositoryProvider.notifier).populars;
-    var loading = ref.watch(popularNotifierProvider) is PopularLoading ;
+    popularPersons = ref.watch(popularsRepositoryProvider.notifier).populars;
+    var loading = ref.watch(popularNotifierProvider) is PopularLoading;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home"),
       ),
-      body: loading ? const Center(child: CustomLoadingWidget())
-          : buildNowPlayingWidget(popularPersons ),
-
+      body: loading
+          ? const Center(child: CustomLoadingWidget())
+          : buildNowPlayingWidget(popularPersons),
     );
   }
+
   Widget buildNowPlayingWidget(List<PopularPerson> data) {
-    List<Results> popular= [];
-    log("${data.length}");
+    List<Results> popular = [];
     data.forEach((element) {
       element.results?.forEach((element) {
         popular.add(element);
       });
     });
+    popular.sort((a, b) => b.id!.compareTo(a.id!));
+
 
     if (popular.isEmpty) {
       return Container(
@@ -82,7 +87,8 @@ if(once){
       return _popularList(popular);
     }
   }
- Widget _popularList( List<Results>? popular){
+
+  Widget _popularList(List<Results>? popular) {
     return Stack(
       children: [
         ListView.builder(
@@ -91,11 +97,9 @@ if(once){
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
-                AutoRouter.of(context).push(
-                    DetailsRoute(
-                      popularPerson:  popular![index],
-                    )
-                );
+                AutoRouter.of(context).push(DetailsRoute(
+                  popularPerson: popular![index],
+                ));
               },
               child: Stack(
                 children: [
@@ -171,10 +175,8 @@ if(once){
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(
-                              Icons.star_rate,
-                              color: context.theme.colorScheme.secondary
-                          ),
+                          Icon(Icons.star_rate,
+                              color: context.theme.colorScheme.secondary),
                           Text(
                             "${popular?[index].popularity ?? 0}",
                             style: const TextStyle(
@@ -197,17 +199,35 @@ if(once){
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ElevatedButton.icon(onPressed:(){
-getMorePopulars();
-
-
-            }, icon:const Icon(Icons.assured_workload) , label:Text("Load More.." ,)),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton.icon(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                      context.theme.colorScheme.secondary,
+                    ),
+                    foregroundColor: MaterialStateProperty.all(
+                      context.theme.colorScheme.primary,
+                    ),
+                  ),
+                    onPressed: () {
+                      getMorePopulars();
+                    },
+                    icon: const Icon(Icons.assured_workload),
+                    label: Text(
+                      "Load More..",
+                    )),
+              ],
+            ),
           ],
         ),
       ],
     );
- }
-  getMorePopulars(){
+  }
+
+  getMorePopulars() {
     ref.read(popularNotifierProvider.notifier).getMorePopulars();
   }
 }
