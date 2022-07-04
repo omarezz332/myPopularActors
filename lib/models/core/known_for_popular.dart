@@ -41,8 +41,8 @@ class KnownFor {
         this.originCountry,
         this.originalName});
   factory KnownFor.fromJson(Map<String, dynamic> json) =>
-      _$KnownForPopularFromJson(json);
-  Map<String, dynamic> toJson() => _$KnownForPopularToJson(this);
+      _$KnownForFromJson(json);
+  Map<String, dynamic> toJson() => _$KnownForToJson(this);
 
 
 

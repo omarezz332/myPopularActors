@@ -55,6 +55,20 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home"),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+                child: Text(
+                    "${(ref.watch(popularsRepositoryProvider.notifier).page) * 20} Persons")),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+                child: Text(
+                    "${ref.watch(popularsRepositoryProvider.notifier).page} Pages Loaded")),
+          ),
+        ],
       ),
       body: loading
           ? const Center(child: CustomLoadingWidget())
@@ -69,8 +83,7 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
         popular.add(element);
       });
     });
-    popular.sort((a, b) => b.id!.compareTo(a.id!));
-
+    popular = getPopularsSorted(popular);
 
     if (popular.isEmpty) {
       return Container(
@@ -89,145 +102,152 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
   }
 
   Widget _popularList(List<Results>? popular) {
-    return Stack(
-      children: [
-        ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: popular?.length,
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {
-                AutoRouter.of(context).push(DetailsRoute(
-                  popularPerson: popular![index],
-                ));
-              },
-              child: Stack(
-                children: [
-                  Container(
-                    height: 220.0.h,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          "https://image.tmdb.org/t/p/original/" +
-                              "${popular?[index].profilePath}",
-                        ),
-                        fit: BoxFit.fitWidth,
-                      ),
-                    ),
-                  ),
-                  // FavouriteInList(
-                  //   movie: movies[index],
-                  // ),
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          context.theme.primaryColor.withOpacity(0.8),
-                          context.theme.primaryColor.withOpacity(0.0),
-                        ],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                        stops: const [
-                          0.0,
-                          0.9,
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0.0.h,
-                    child: Container(
+    return SafeArea(
+      child: Stack(
+        children: [
+          ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: popular?.length,
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {
+                  AutoRouter.of(context).push(DetailsRoute(
+                    popularPerson: popular![index],
+                  ));
+                },
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 220.0.h,
                       width: MediaQuery.of(context).size.width,
-                      color: Colors.black.withOpacity(0.6),
-                      padding: const EdgeInsets.only(left: 20.0, right: 10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            popular?[index].name ?? "",
-                            style: TextStyle(
-                              height: 1.5,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w900,
-                              fontSize: 16.0,
-                            ),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        image: DecorationImage(
+                          image:
+                            NetworkImage(
+                                "https://image.tmdb.org/t/p/w500/${popular?[index].profilePath}",
                           ),
-                          Text(
-                            popular?[index].knownForDepartment ?? "",
-                            style: TextStyle(
-                              height: 1.5,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w900,
-                              fontSize: 12.0,
-                            ),
-                          ),
-                        ],
+                          fit: BoxFit.fitWidth,
+                        ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    bottom: 0.0.h,
-                    left: MediaQuery.of(context).size.width * 0.6,
-                    child: Container(
-                      padding: const EdgeInsets.only(left: 20.0, right: 10.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.star_rate,
-                              color: context.theme.colorScheme.secondary),
-                          Text(
-                            "${popular?[index].popularity ?? 0}",
-                            style: const TextStyle(
-                              height: 1.5,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18.0,
-                            ),
-                          )
-                        ],
+                    // FavouriteInList(
+                    //   movie: movies[index],
+                    // ),
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            context.theme.primaryColor.withOpacity(0.8),
+                            context.theme.primaryColor.withOpacity(0.0),
+                          ],
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          stops: const [
+                            0.0,
+                            0.9,
+                          ],
+                        ),
                       ),
                     ),
-                  )
+                    Positioned(
+                      bottom: 0.0.h,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.black.withOpacity(0.6),
+                        padding: const EdgeInsets.only(left: 20.0, right: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              popular?[index].name ?? "",
+                              style: TextStyle(
+                                height: 1.5,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                            Text(
+                              popular?[index].knownForDepartment ?? "",
+                              style: TextStyle(
+                                height: 1.5,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 12.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0.0.h,
+                      left: MediaQuery.of(context).size.width * 0.6,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 20.0, right: 10.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(Icons.star_rate,
+                                color: context.theme.colorScheme.secondary),
+                            Text(
+                              "${popular?[index].popularity ?? 0}",
+                              style: const TextStyle(
+                                height: 1.5,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18.0,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          context.theme.colorScheme.secondary,
+                        ),
+                        foregroundColor: MaterialStateProperty.all(
+                          context.theme.colorScheme.primary,
+                        ),
+                      ),
+                      onPressed: () {
+                        getMorePopulars();
+                      },
+                      icon: const Icon(Icons.assured_workload),
+                      label: Text(
+                        "Load More..",
+                      )),
                 ],
               ),
-            );
-          },
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton.icon(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                      context.theme.colorScheme.secondary,
-                    ),
-                    foregroundColor: MaterialStateProperty.all(
-                      context.theme.colorScheme.primary,
-                    ),
-                  ),
-                    onPressed: () {
-                      getMorePopulars();
-                    },
-                    icon: const Icon(Icons.assured_workload),
-                    label: Text(
-                      "Load More..",
-                    )),
-              ],
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 
   getMorePopulars() {
     ref.read(popularNotifierProvider.notifier).getMorePopulars();
+  }
+
+  List<Results> getPopularsSorted(List<Results> popular) {
+    popular.sort((a, b) => b.id!.compareTo(a.id!));
+    return popular;
   }
 }

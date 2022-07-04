@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'personDetails.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true,fieldRename: FieldRename.snake)
 class PersonDetails {
   bool? adult;
   List<String>? alsoKnownAs;

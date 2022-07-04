@@ -36,7 +36,7 @@ class DetailsNotifier extends StateNotifier<DetailsState> {
     state=  const DetailsLoading();
     PopularImage popularImage= await _api.getPopularsImage(personId);
     print('popularPerson: ${popularImage.profiles?.length}');
-    state = DetailsGot();
+    state = const DetailsGot();
     return popularImage;
 
   }

@@ -6,7 +6,7 @@ part of 'known_for_popular.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-KnownFor _$KnownForPopularFromJson(Map<String, dynamic> json) => KnownFor(
+KnownFor _$KnownForFromJson(Map<String, dynamic> json) => KnownFor(
       adult: json['adult'] as bool?,
       backdropPath: json['backdropPath'] as String?,
       genreIds:
@@ -30,7 +30,7 @@ KnownFor _$KnownForPopularFromJson(Map<String, dynamic> json) => KnownFor(
       originalName: json['originalName'] as String?,
     );
 
-Map<String, dynamic> _$KnownForPopularToJson(KnownFor instance) => <String, dynamic>{
+Map<String, dynamic> _$KnownForToJson(KnownFor instance) => <String, dynamic>{
       'adult': instance.adult,
       'backdropPath': instance.backdropPath,
       'genreIds': instance.genreIds,

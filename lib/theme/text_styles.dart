@@ -6,15 +6,15 @@ final headLine1 = TextStyle(
  // fontFamily: "Almarai"
 );
 
-final headLine2 = TextStyle(fontSize: 18.sp, fontFamily: 'Almarai');
+final headLine2 = TextStyle(fontSize: 18.sp, fontFamily: 'Almarai',color: Colors.white);
 
 
-final headLine6 = TextStyle(fontSize: 15.sp,fontFamily: 'Almarai');
+final headLine6 = TextStyle(fontSize: 15.sp,fontFamily: 'Almarai',color: Colors.white);
 
-final button = TextStyle(fontSize: 16.sp, fontFamily: 'Almarai');
+final button = TextStyle(fontSize: 16.sp, fontFamily: 'Almarai',color: Colors.white);
 
-final subtitle2 = TextStyle(fontSize: 19.sp,fontFamily: 'Almirai');
+final subtitle2 = TextStyle(fontSize: 19.sp,fontFamily: 'Almirai',color: Colors.white);
 
-final caption = TextStyle(fontSize: 12.sp, fontFamily: 'Almarai');
+final caption = TextStyle(fontSize: 12.sp, fontFamily: 'Almarai',color: Colors.white);
 
-final overLine = TextStyle(fontSize: 11.sp,fontFamily: 'Almarai');
+final overLine = TextStyle(fontSize: 11.sp,fontFamily: 'Almarai',color: Colors.white);

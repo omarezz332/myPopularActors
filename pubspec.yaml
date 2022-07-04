@@ -40,6 +40,7 @@ dependencies:
   shared_preferences: ^2.0.13
   flutter_secure_storage: ^5.0.2
   cached_network_image: ^3.2.0
+  gallery_saver: ^2.3.2
     #UI
   flutter_screenutil: ^5.3.1
   overlay_support: ^2.0.1
@@ -84,6 +85,15 @@ assets:
     - assets/images/
     - assets/jsons/
     - assets/translations
+    - assets/fonts/
+
+fonts:
+      - family: Almarai
+        fonts:
+          - asset: assets/fonts/Almarai-Bold.ttf
+          - asset: assets/fonts/Almarai-ExtraBold.ttf
+          - asset: assets/fonts/Almarai-Light.ttf
+          - asset: assets/fonts/Almarai-Regular.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
