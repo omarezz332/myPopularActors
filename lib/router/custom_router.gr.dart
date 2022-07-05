@@ -39,7 +39,7 @@ class AppRouter extends _i4.RootStackRouter {
       final args = routeData.argsAs<ImageViewRouteArgs>();
       return _i4.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i3.ImageViewScreen(args.imageUrl, key: args.key));
+          child: _i3.ImageViewScreen(args.imageUrl, args.id, key: args.key));
     }
   };
 
@@ -86,23 +86,26 @@ class DetailsRouteArgs {
 /// generated route for
 /// [_i3.ImageViewScreen]
 class ImageViewRoute extends _i4.PageRouteInfo<ImageViewRouteArgs> {
-  ImageViewRoute({required String? imageUrl, _i5.Key? key})
+  ImageViewRoute({required String? imageUrl, required int? id, _i5.Key? key})
       : super(ImageViewRoute.name,
             path: '/image-view-screen',
-            args: ImageViewRouteArgs(imageUrl: imageUrl, key: key));
+            args: ImageViewRouteArgs(imageUrl: imageUrl, id: id, key: key));
 
   static const String name = 'ImageViewRoute';
 }
 
 class ImageViewRouteArgs {
-  const ImageViewRouteArgs({required this.imageUrl, this.key});
+  const ImageViewRouteArgs(
+      {required this.imageUrl, required this.id, this.key});
 
   final String? imageUrl;
+
+  final int? id;
 
   final _i5.Key? key;
 
   @override
   String toString() {
-    return 'ImageViewRouteArgs{imageUrl: $imageUrl, key: $key}';
+    return 'ImageViewRouteArgs{imageUrl: $imageUrl, id: $id, key: $key}';
   }
 }

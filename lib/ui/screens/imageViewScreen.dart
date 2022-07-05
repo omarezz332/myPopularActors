@@ -4,8 +4,9 @@ import 'package:my_poupular_actors/helpers/extensions.dart';
 
 class ImageViewScreen extends StatefulWidget {
   final String? imageUrl;
+  final int? id;
 
-  const ImageViewScreen(this.imageUrl, {Key? key}) : super(key: key);
+  const ImageViewScreen(this.imageUrl,this.id ,{Key? key}) : super(key: key);
 
   @override
   State<ImageViewScreen> createState() => _ImageViewScreenState();
@@ -35,8 +36,12 @@ class _ImageViewScreenState extends State<ImageViewScreen> {
           ),
         ],
       ),
-      body: Center(
-        child: Image.network(widget.imageUrl ?? ''),
+      body: Hero(
+        key: Key("${widget.id}"),
+        tag: widget.id ?? "",
+        child: Center(
+          child: Image.network(widget.imageUrl ?? ''),
+        ),
       ),
     );
   }

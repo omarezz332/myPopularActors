@@ -4,8 +4,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animator/widgets/bouncing_entrances/bounce_in_down.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_poupular_actors/helpers/extensions.dart';
+import 'package:my_poupular_actors/helpers/sized_boxes.dart';
 import '../../helpers/extensions.dart';
 import '../../models/core/popular_person.dart';
 import '../../provider/persons_provider/popular_notifier.dart';
@@ -53,6 +55,7 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
     var loading = ref.watch(popularNotifierProvider) is PopularLoading;
 
     return Scaffold(
+      backgroundColor: Colors.grey[800],
       appBar: AppBar(
         title: const Text("Home"),
         actions: [
@@ -105,109 +108,125 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
     return SafeArea(
       child: Stack(
         children: [
-          ListView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: popular?.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {
-                  AutoRouter.of(context).push(DetailsRoute(
-                    popularPerson: popular![index],
-                  ));
-                },
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 220.0.h,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        image: DecorationImage(
-                          image:
-                            NetworkImage(
-                                "https://image.tmdb.org/t/p/w500/${popular?[index].profilePath}",
+          BounceInDown(
+
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: popular?.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    AutoRouter.of(context).push(DetailsRoute(
+                      popularPerson: popular![index],
+                    ));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 15.0,right: 5,left: 5),
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 270.0.h,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(20),
+                            image: DecorationImage(
+                              image:
+                                NetworkImage(
+                                    "https://image.tmdb.org/t/p/w500/${popular?[index].profilePath}",
+                              ),
+                              fit: BoxFit.cover
+                            ),
                           ),
-                          fit: BoxFit.fitWidth,
                         ),
-                      ),
-                    ),
-                    // FavouriteInList(
-                    //   movie: movies[index],
-                    // ),
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            context.theme.primaryColor.withOpacity(0.8),
-                            context.theme.primaryColor.withOpacity(0.0),
-                          ],
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                          stops: const [
-                            0.0,
-                            0.9,
-                          ],
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0.0.h,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        color: Colors.black.withOpacity(0.6),
-                        padding: const EdgeInsets.only(left: 20.0, right: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              popular?[index].name ?? "",
-                              style: TextStyle(
-                                height: 1.5,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 16.0,
+                        // FavouriteInList(
+                        //   movie: movies[index],
+                        // ),
+                        // Container(
+                        //   decoration: BoxDecoration(
+                        //     gradient: LinearGradient(
+                        //       colors: [
+                        //         context.theme.primaryColor.withOpacity(0.8),
+                        //         context.theme.primaryColor.withOpacity(0.0),
+                        //       ],
+                        //       begin: Alignment.bottomCenter,
+                        //       end: Alignment.topCenter,
+                        //       stops: const [
+                        //         0.0,
+                        //         0.9,
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+                        Positioned(
+                          bottom: 0.0.h,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                          //  color: Colors.black.withOpacity(0.3),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.3),
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(30),
                               ),
                             ),
-                            Text(
-                              popular?[index].knownForDepartment ?? "",
-                              style: TextStyle(
-                                height: 1.5,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 12.0,
-                              ),
+
+                            padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  popular?[index].name ?? "",
+                                  style: TextStyle(
+                                    height: 1.5,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                Text(
+                                  popular?[index].knownForDepartment ?? "",
+                                  style: TextStyle(
+                                    height: 1.5,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 12.0,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                        Positioned(
+                          bottom: 0.0.h,
+                          left: MediaQuery.of(context).size.width * 0.6,
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 20.0, right: 10.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(Icons.star_rate,
+                                    color: context.theme.colorScheme.secondary),
+                                kHorizontalSizedBoxXXSmall,
+                                Text(
+                                  "${popular?[index].popularity ?? 0}",
+                                  style: const TextStyle(
+                                    height: 1.5,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18.0,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                    Positioned(
-                      bottom: 0.0.h,
-                      left: MediaQuery.of(context).size.width * 0.6,
-                      child: Container(
-                        padding: const EdgeInsets.only(left: 20.0, right: 10.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(Icons.star_rate,
-                                color: context.theme.colorScheme.secondary),
-                            Text(
-                              "${popular?[index].popularity ?? 0}",
-                              style: const TextStyle(
-                                height: 1.5,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18.0,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              );
-            },
+                  ),
+                );
+              },
+            ),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
