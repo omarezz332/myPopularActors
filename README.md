@@ -38,6 +38,8 @@ baseUrl ="https://api.themoviedb.org/3/person"
 
 ```http
   GET baseUrl/$person_id/images?$apiKey&language=en-US
+  
+```
 
 ## features
 
