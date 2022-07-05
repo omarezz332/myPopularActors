@@ -37,8 +37,8 @@ class _ImageViewScreenState extends State<ImageViewScreen> {
         ],
       ),
       body: Hero(
-        key: Key("${widget.id}"),
-        tag: widget.id ?? "",
+        transitionOnUserGestures: true,
+        tag: widget.id! ,
         child: Center(
           child: Image.network(widget.imageUrl ?? ''),
         ),

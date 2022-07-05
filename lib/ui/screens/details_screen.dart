@@ -77,73 +77,7 @@ class _DetailseState extends ConsumerState<DetailsScreen> {
     );
   }
 
- Widget getPopularImages() {
-    return SliverList(
-      delegate: SliverChildListDelegate([
-        Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Images",
-                style: context.theme.textTheme.button?.copyWith(
-                  fontSize: 17.sp,
-                  height: 1.5,
-                ),
-              ),
-              kVerticalSizedBoxMedium,
-              Container(
-                height: 150.h,
-                width: double.infinity,
-                child: ListView.builder(
-                  physics: const ScrollPhysics().applyTo(
-                    const BouncingScrollPhysics(),
-                  ),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: popularImage.profiles?.length,
-                  itemBuilder: (context, index) {
-                    return Hero(
-key: Key("${popularImage.id}"),
-                      tag: popularImage.id?? "",
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: GestureDetector(
-                          onTap: () {
-                            AutoRouter.of(context).push(ImageViewRoute(
-                          imageUrl:  "https://image.tmdb.org/t/p/w500/${popularImage.profiles?[index].filePath}",
-                              id: popularImage.id ?? 1,
-                            ));
-                          },
-                          child: ZoomIn(
-                            preferences: const AnimationPreferences(
-                              duration: Duration(milliseconds: 400),
-                            ),
-                            child: Container(
-                              width: 150.w,
-                              height: 150.h,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                      "https://image.tmdb.org/t/p/w500/${popularImage.profiles?[index].filePath}"),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        )
-      ]),
-    );
-  }
+
 
  Widget getPopularDescription() {
     return SliverList(
@@ -196,7 +130,6 @@ key: Key("${popularImage.id}"),
           )
         ]));
  }
-
  Widget getPopularCover() {
  return  SliverAppBar(
      expandedHeight: 300.h,
@@ -282,5 +215,80 @@ key: Key("${popularImage.id}"),
      ),
    );
  }
+ Widget getPopularImages() {
+    return SliverList(
+      delegate: SliverChildListDelegate([
+        Padding(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Images",
+                style: context.theme.textTheme.button?.copyWith(
+                  fontSize: 17.sp,
+                  height: 1.5,
+                ),
+              ),
+              kVerticalSizedBoxMedium,
+              Container(
+                height: 150.h,
+                width: double.infinity,
+                child: ListView.builder(
+                  physics: const ScrollPhysics().applyTo(
+                    const BouncingScrollPhysics(),
+                  ),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: popularImage.profiles?.length,
+                  itemBuilder: (context, index) {
+                    return Hero(
+                      placeholderBuilder: (context, size, _) {
+                        return Container(
+                          width: size.width,
+                          height: size.height,
+                          color: Colors.grey[800],
+                        );
+                      },
+                      transitionOnUserGestures: true,
+                     // key: Key("${popularImage.id}"),
+                      tag: index,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: GestureDetector(
+                          onTap: () {
+                            AutoRouter.of(context).push(ImageViewRoute(
+                              imageUrl:  "https://image.tmdb.org/t/p/w500/${popularImage.profiles?[index].filePath}",
+                              id: index ,
+                            ));
+                          },
+                          child: ZoomIn(
+                            preferences: const AnimationPreferences(
+                              duration: Duration(milliseconds: 400),
+                            ),
+                            child: Container(
+                              width: 150.w,
+                              height: 150.h,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                      "https://image.tmdb.org/t/p/w500/${popularImage.profiles?[index].filePath}"),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        )
+      ]),
+    );
+  }
  }
 

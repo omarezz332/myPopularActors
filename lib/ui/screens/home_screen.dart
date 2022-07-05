@@ -139,25 +139,6 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
                             ),
                           ),
                         ),
-                        // FavouriteInList(
-                        //   movie: movies[index],
-                        // ),
-                        // Container(
-                        //   decoration: BoxDecoration(
-                        //     gradient: LinearGradient(
-                        //       colors: [
-                        //         context.theme.primaryColor.withOpacity(0.8),
-                        //         context.theme.primaryColor.withOpacity(0.0),
-                        //       ],
-                        //       begin: Alignment.bottomCenter,
-                        //       end: Alignment.topCenter,
-                        //       stops: const [
-                        //         0.0,
-                        //         0.9,
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
                         Positioned(
                           bottom: 0.0.h,
                           child: Container(
@@ -165,7 +146,7 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
                           //  color: Colors.black.withOpacity(0.3),
                             decoration: BoxDecoration(
                               color: Colors.black.withOpacity(0.3),
-                              borderRadius: BorderRadius.only(
+                              borderRadius: const BorderRadius.only(
                                 bottomLeft: Radius.circular(20),
                                 bottomRight: Radius.circular(30),
                               ),
@@ -177,7 +158,7 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
                               children: [
                                 Text(
                                   popular?[index].name ?? "",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     height: 1.5,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w900,
@@ -186,7 +167,7 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
                                 ),
                                 Text(
                                   popular?[index].knownForDepartment ?? "",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     height: 1.5,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w900,
@@ -249,7 +230,7 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
                         getMorePopulars();
                       },
                       icon: const Icon(Icons.assured_workload),
-                      label: Text(
+                      label: const Text(
                         "Load More..",
                       )),
                 ],

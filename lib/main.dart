@@ -6,15 +6,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_poupular_actors/router/custom_router.gr.dart';
 import 'package:my_poupular_actors/theme/app_theme.dart';
+import 'package:my_poupular_actors/ui/screens/home_screen.dart';
 
 import 'package:overlay_support/overlay_support.dart';
-
+import 'package:flutter_test/flutter_test.dart';
 import 'helpers/app_shared_prefs.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // custom initial helpers
   await AppSharedPrefs.ensureInit();
+
 
   runApp(const ProviderScope(
     child: MyApp(),
