@@ -35,16 +35,6 @@ class PopularRepository implements IPopularRepository {
         }
         return popularPerson;
       }
-      // final hasKey = await _secureStorage.containsKey(key: kPopular);
-      // if (hasKey) {
-      //   final String? _posts = await _secureStorage.read(key: kPopular);
-      //   final List<dynamic> extractedData = json.decode(_posts!);
-      // //  debugPrint("hasPosts: $extractedData");
-      //   extractedData.forEach((element) {
-      //     popularPerson.add(PopularPerson.fromJson(element));
-      //   });
-      //return popularPerson;
-    //}
       return [];
     } on PlatformException {
       //await _secureStorage.delete(key: kPopular);
@@ -62,6 +52,34 @@ class PopularRepository implements IPopularRepository {
     pref.setString(kPopular, result);
     //await _secureStorage.write(key: kPopular, value: result);
   }
+  //
+  // @override
+  // Future<int> getPages()async {
+  //   try{
+  //     final pref = await SharedPreferences.getInstance();
+  //     if (pref.containsKey(kPopular)) {
+  //       final extractedData = json.decode(pref.getString(kPages)!) as int;
+  //       return extractedData;
+  //     }
+  //     return 1;
+  //
+  //   }on PlatformException {
+  //     await _secureStorage.delete(key: kPages);
+  //     return 1;
+  //   }catch(e){
+  //     return 1;
+  //
+  //   }
+  //
+  // }
+  //
+  // @override
+  // Future<void> setPages(int pages)async {
+  //   final pref = await SharedPreferences.getInstance();
+  //   String result = json.encode(pages);
+  //   pref.setString(kPages, result);
+  //
+  // }
 
 }
 

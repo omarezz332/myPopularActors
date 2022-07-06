@@ -24,12 +24,16 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _MyHomePageState extends ConsumerState<HomeScreen> {
   List<PopularPerson> popularPersons = [];
   bool once = true;
-
+  late int page ;
 
   @override
   void didChangeDependencies() {
     if (once) {
-      ref.read(popularNotifierProvider.notifier).init();
+      Future.delayed(const Duration(milliseconds: 1), ()async {
+        ref.read(popularNotifierProvider.notifier).init();
+       page=(await ref.watch(popularsRepositoryProvider.notifier).page);
+      });
+//get page number
       once = false;
     }
     super.didChangeDependencies();
@@ -39,6 +43,7 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     popularPersons = ref.watch(popularsRepositoryProvider.notifier).populars;
     var loading = ref.watch(popularNotifierProvider) is PopularLoading;
+    page=popularPersons.last.page!;
 
     return Scaffold(
       backgroundColor: Colors.grey[800],
@@ -49,13 +54,13 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
                 child: Text(
-                    "${(ref.watch(popularsRepositoryProvider.notifier).page) *kPopularNumber } Persons")),
+                    "${page * kPopularNumber } Persons")),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
                 child: Text(
-                    "${ref.watch(popularsRepositoryProvider.notifier).page} Pages Loaded")),
+                    "$page Pages Loaded")),
           ),
         ],
       ),
@@ -81,7 +86,7 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: const [
-            Text("No Movies"),
+            Text("No Movies",),
           ],
         ),
       );
@@ -96,103 +101,107 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
         children: [
           BounceInDown(
 
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: popular?.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    AutoRouter.of(context).push(DetailsRoute(
-                      popularPerson: popular![index],
-                    ));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0,right: 5,left: 5),
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: 270.0.h,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(20),
-                            image: DecorationImage(
-                              image:
-                                NetworkImage(
-                                    "https://image.tmdb.org/t/p/w500/${popular?[index].profilePath}",
-                              ),
-                              fit: BoxFit.cover
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 0.0.h,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                          //  color: Colors.black.withOpacity(0.3),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.3),
-                              borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(20),
-                                bottomRight: Radius.circular(30),
-                              ),
-                            ),
+            child: RefreshIndicator(
 
-                            padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  popular?[index].name ?? "",
-                                  style: const TextStyle(
-                                    height: 1.5,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 16.0,
-                                  ),
+              onRefresh: _pullRefresh,
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: popular?.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      AutoRouter.of(context).push(DetailsRoute(
+                        popularPerson: popular![index],
+                      ));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0,right: 5,left: 5),
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: 270.0.h,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(20),
+                              image: DecorationImage(
+                                image:
+                                  NetworkImage(
+                                      "https://image.tmdb.org/t/p/w500/${popular?[index].profilePath}",
                                 ),
-                                Text(
-                                  popular?[index].knownForDepartment ?? "",
-                                  style: const TextStyle(
-                                    height: 1.5,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 12.0,
-                                  ),
-                                ),
-                              ],
+                                fit: BoxFit.cover
+                              ),
                             ),
                           ),
-                        ),
-                        Positioned(
-                          bottom: 0.0.h,
-                          left: MediaQuery.of(context).size.width * 0.6,
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 20.0, right: 10.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(Icons.star_rate,
-                                    color: context.theme.colorScheme.secondary),
-                                kHorizontalSizedBoxXXSmall,
-                                Text(
-                                  "${popular?[index].popularity ?? 0}",
-                                  style: const TextStyle(
-                                    height: 1.5,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 18.0,
+                          Positioned(
+                            bottom: 0.0.h,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                            //  color: Colors.black.withOpacity(0.3),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.3),
+                                borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(20),
+                                  bottomRight: Radius.circular(30),
+                                ),
+                              ),
+
+                              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    popular?[index].name ?? "",
+                                    style: const TextStyle(
+                                      height: 1.5,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 16.0,
+                                    ),
                                   ),
-                                )
-                              ],
+                                  Text(
+                                    popular?[index].knownForDepartment ?? "",
+                                    style: const TextStyle(
+                                      height: 1.5,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        )
-                      ],
+                          Positioned(
+                            bottom: 0.0.h,
+                            left: MediaQuery.of(context).size.width * 0.6,
+                            child: Container(
+                              padding: const EdgeInsets.only(left: 20.0, right: 10.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.star_rate,
+                                      color: context.theme.colorScheme.secondary),
+                                  kHorizontalSizedBoxXXSmall,
+                                  Text(
+                                    "${popular?[index].popularity ?? 0}",
+                                    style: const TextStyle(
+                                      height: 1.5,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18.0,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
           Column(
@@ -235,5 +244,9 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
   List<Results> getPopularsSorted(List<Results> popular) {
     popular.sort((a, b) => b.id!.compareTo(a.id!));
     return popular;
+  }
+
+  Future<void> _pullRefresh() async {
+    ref.read(popularNotifierProvider.notifier).init();
   }
 }

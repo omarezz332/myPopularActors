@@ -24,27 +24,26 @@ class PopularNotifier extends StateNotifier<PopularState> {
   ) : super(const PopularInitial());
 
   Future<void> init() async {
-    state=  const PopularLoading();
+    state = const PopularLoading();
     //check connection and if there no internet we will get our data from local storage
-    if(await CheckInternet.checkInternetConnection()){
-      PopularPerson popularPerson= await _api.getPopulars(_popularProvider.page);
+    if (await CheckInternet.checkInternetConnection()) {
+      //load data from remote
+      PopularPerson popularPerson =
+          await _api.getPopulars(await _popularProvider.page);
       await _popularProvider.setPopular(popularPerson);
-
-    }
-    else{
-  await _popularProvider.getPopulars();
-
-
+    } else {
+      //get data from locale.
+      await _popularProvider.getPopulars();
     }
     state = const PopularGot();
-
   }
+
   Future<void> getMorePopulars() async {
+    //get more populars from remote
     state = const PopularLoading();
     _popularProvider.morePages();
-    PopularPerson popularPerson= await _api.getPopulars(_popularProvider.page);
+    PopularPerson popularPerson = await _api.getPopulars( _popularProvider.page);
     await _popularProvider.setPopular(popularPerson);
     state = const PopularGot();
   }
-
 }

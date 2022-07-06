@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -7,10 +6,8 @@ import 'package:my_poupular_actors/data/local/interfaces/i_popular_repository.da
 import 'package:my_poupular_actors/models/core/popular_person.dart';
 import '../../data/local/repositories/posts_repository.dart';
 
-
-
 final popularsRepositoryProvider = ChangeNotifierProvider(
-      (ref) => PopularRepositoryProvider(ref.read(popularRepository)),
+  (ref) => PopularRepositoryProvider(ref.read(popularRepository)),
 );
 
 class PopularRepositoryProvider extends ChangeNotifier {
@@ -20,13 +17,17 @@ class PopularRepositoryProvider extends ChangeNotifier {
 
   List<PopularPerson> _popularPerson = [];
   int _page = 1;
- void morePages(){
-   if(_page<=500){
-     _page++;
-   }
 
- }
-int get page => _page;
+  void morePages() async{
+    if (_page <= 500) {
+     _page= (_popularPerson.last.page!)+1;
+
+    }
+  }
+  int get page {
+   return _page;
+  }
+
   List<PopularPerson> get populars => _popularPerson;
 
   void updatePosts(List<PopularPerson> populars) {
@@ -36,21 +37,19 @@ int get page => _page;
 
   Future<void> getPopulars() async {
     final repositoryPopulars = await _popularRepository.getPopular();
-      _popularPerson = repositoryPopulars;
-
+    _popularPerson = repositoryPopulars;
   }
 
   Future setPopular(PopularPerson populars) async {
     if (_popularPerson.isEmpty) {
-      _popularPerson = [];
       _popularPerson.add(populars);
+    } else {
+      if(_popularPerson.where((element) => element.page== populars.page).isEmpty){
+        _popularPerson.add(populars);
+      }
 
     }
-    else {
-      _popularPerson.add(populars);
-
-    }
-    notifyListeners();
+    //save to local storage
     await _popularRepository.setPopular(_popularPerson);
   }
 }
