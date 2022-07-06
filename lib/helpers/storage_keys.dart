@@ -1,5 +1,5 @@
 const String kPopular="popular";
-
+const int kPopularNumber=20;
 const String kToken = 'token';
 const String kTheme = 'theme';
 

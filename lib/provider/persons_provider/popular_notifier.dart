@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_poupular_actors/data/remote/interfaces/i_populars_api.dart';
 import 'package:my_poupular_actors/provider/persons_provider/populars_repository_provider.dart';
@@ -6,7 +5,6 @@ import '../../data/remote/apis/person_api.dart';
 import '../../helpers/checkInternet.dart';
 import '../../models/core/popular_person.dart';
 import 'popular_state.dart';
-
 
 final popularNotifierProvider =
     StateNotifierProvider<PopularNotifier, PopularState>(

@@ -1,14 +1,11 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/widgets/bouncing_entrances/bounce_in_down.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_poupular_actors/helpers/extensions.dart';
 import 'package:my_poupular_actors/helpers/sized_boxes.dart';
 import '../../helpers/extensions.dart';
+import '../../helpers/storage_keys.dart';
 import '../../models/core/popular_person.dart';
 import '../../provider/persons_provider/popular_notifier.dart';
 import '../../provider/persons_provider/popular_state.dart';
@@ -25,25 +22,14 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _MyHomePageState extends ConsumerState<HomeScreen> {
-  var state;
-
   List<PopularPerson> popularPersons = [];
-
   bool once = true;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   void didChangeDependencies() {
     if (once) {
       ref.read(popularNotifierProvider.notifier).init();
-
-      state = ref.read(popularNotifierProvider.notifier).state;
-      // popularPersons=ref.read(popularNotifierProvider.notifier).popularPerson;
       once = false;
     }
     super.didChangeDependencies();
@@ -63,7 +49,7 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
                 child: Text(
-                    "${(ref.watch(popularsRepositoryProvider.notifier).page) * 20} Persons")),
+                    "${(ref.watch(popularsRepositoryProvider.notifier).page) *kPopularNumber } Persons")),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -81,20 +67,20 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
 
   Widget buildNowPlayingWidget(List<PopularPerson> data) {
     List<Results> popular = [];
-    data.forEach((element) {
+    for (var element in data) {
       element.results?.forEach((element) {
         popular.add(element);
       });
-    });
+    }
     popular = getPopularsSorted(popular);
 
     if (popular.isEmpty) {
-      return Container(
+      return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+          children: const [
             Text("No Movies"),
           ],
         ),

@@ -24,7 +24,7 @@ class DetailsScreen extends ConsumerStatefulWidget {
   ConsumerState<DetailsScreen> createState() => _DetailseState();
 }
 class _DetailseState extends ConsumerState<DetailsScreen> {
-  var state;
+
   late PersonDetails personDetails = PersonDetails();
   late PopularImage popularImage = PopularImage();
   bool once = true;
@@ -83,9 +83,9 @@ class _DetailseState extends ConsumerState<DetailsScreen> {
     return SliverList(
         delegate: SliverChildListDelegate([
           Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: FadeInDownBig(
-              preferences: AnimationPreferences(
+              preferences: const AnimationPreferences(
                 duration: Duration(milliseconds: 400),
               ),
               child: Column(

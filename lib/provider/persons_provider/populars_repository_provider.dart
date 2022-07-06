@@ -35,12 +35,9 @@ int get page => _page;
   }
 
   Future<void> getPopulars() async {
-    log("tryGetPopulars");
     final repositoryPopulars = await _popularRepository.getPopular();
-    log("getPopulars ${repositoryPopulars.length}");
-    if (repositoryPopulars != '') {
       _popularPerson = repositoryPopulars;
-    }
+
   }
 
   Future setPopular(PopularPerson populars) async {
