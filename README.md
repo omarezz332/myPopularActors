@@ -7,7 +7,39 @@ popular Explorer demo app which you can explore Popular Persons (actors, directo
 ## Tech Stack
 
 **Client:**  Flutter , StateManagement using riverpod + state notifier , local storage using shared preferences 
+
 **Server:** themoviedb.org api
+
+## API Reference
+
+baseUrl ="https://api.themoviedb.org/3/person"
+#### Get all popular perosns per page
+
+```http
+  GET baseUrl/popular?$apiKey&en-US&$page
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `api_key` | `string` | **Required**. Your API key |
+
+#### Get popular persons details
+
+```http
+  GET baseUrl/$person_id?$apiKey&language=en-US
+
+
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+|`person_id`| `string` | **Required**. Id of person to fetch |
+
+#### Get popular persons Images
+
+```http
+  GET baseUrl/$person_id/images?$apiKey&language=en-US
+  
+```
 
 ## features
 
