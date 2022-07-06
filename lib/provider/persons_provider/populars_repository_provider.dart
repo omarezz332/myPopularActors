@@ -1,6 +1,5 @@
 
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_poupular_actors/data/local/interfaces/i_popular_repository.dart';
@@ -22,7 +21,6 @@ class PopularRepositoryProvider extends ChangeNotifier {
   void morePages() async{
     if (_page <= 500) {
      _page= (_popularPerson.last.page!)+1;
-
     }
   }
   int get page {

@@ -1,5 +1,3 @@
-
-import 'package:my_poupular_actors/models/core/popular_person.dart';
 // an abstract class for checking populars state
 abstract class PopularState {
   const PopularState();

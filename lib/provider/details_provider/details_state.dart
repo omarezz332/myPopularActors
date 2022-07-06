@@ -1,8 +1,4 @@
 
-import 'package:my_poupular_actors/models/core/popular_person.dart';
-
-import '../../models/core/personDetails.dart';
-
 abstract class DetailsState {
   const DetailsState();
 }

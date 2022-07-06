@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../helpers/storage_keys.dart';
 import '../interfaces/i_popular_repository.dart';
 
-
+//get populars from local storage
 final popularRepository = Provider<IPopularRepository>((ref) =>
     PopularRepository());
 
@@ -50,36 +50,8 @@ class PopularRepository implements IPopularRepository {
     final pref = await SharedPreferences.getInstance();
     String result = json.encode(popularPerson);
     pref.setString(kPopular, result);
-    //await _secureStorage.write(key: kPopular, value: result);
   }
-  //
-  // @override
-  // Future<int> getPages()async {
-  //   try{
-  //     final pref = await SharedPreferences.getInstance();
-  //     if (pref.containsKey(kPopular)) {
-  //       final extractedData = json.decode(pref.getString(kPages)!) as int;
-  //       return extractedData;
-  //     }
-  //     return 1;
-  //
-  //   }on PlatformException {
-  //     await _secureStorage.delete(key: kPages);
-  //     return 1;
-  //   }catch(e){
-  //     return 1;
-  //
-  //   }
-  //
-  // }
-  //
-  // @override
-  // Future<void> setPages(int pages)async {
-  //   final pref = await SharedPreferences.getInstance();
-  //   String result = json.encode(pages);
-  //   pref.setString(kPages, result);
-  //
-  // }
+
 
 }
 

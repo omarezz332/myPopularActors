@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-import 'package:my_poupular_actors/helpers/extensions.dart';
-
 class ImageViewScreen extends StatefulWidget {
   final String? imageUrl;
   final int? id;

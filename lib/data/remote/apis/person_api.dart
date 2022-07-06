@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 import '../endpoints.dart';
 import '../interfaces/i_populars_api.dart';
-
+//get populars from remote
 final popularApiProvider = Provider<IPopularApi>(
       (ref) => PopularApi(),
 );
