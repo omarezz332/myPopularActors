@@ -1,4 +1,5 @@
-import 'dart:developer';
+
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,7 +26,10 @@ class PopularRepositoryProvider extends ChangeNotifier {
     }
   }
   int get page {
-   return _page;
+for (var element in _popularPerson) {
+  _page=max(_page, element.page??1);
+}
+return _page;
   }
 
   List<PopularPerson> get populars => _popularPerson;

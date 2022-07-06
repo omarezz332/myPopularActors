@@ -31,7 +31,7 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
     if (once) {
       Future.delayed(const Duration(milliseconds: 1), ()async {
         ref.read(popularNotifierProvider.notifier).init();
-       page=(await ref.watch(popularsRepositoryProvider.notifier).page);
+
       });
 //get page number
       once = false;
@@ -43,8 +43,7 @@ class _MyHomePageState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     popularPersons = ref.watch(popularsRepositoryProvider.notifier).populars;
     var loading = ref.watch(popularNotifierProvider) is PopularLoading;
-    page=popularPersons.last.page!;
-
+    page=( ref.watch(popularsRepositoryProvider.notifier).page);
     return Scaffold(
       backgroundColor: Colors.grey[800],
       appBar: AppBar(
