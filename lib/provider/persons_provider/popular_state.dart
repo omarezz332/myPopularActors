@@ -16,3 +16,7 @@ class PopularGot extends PopularState {
   const PopularGot();
 }
 
+class PopularError extends PopularState {
+  final String message;
+  const PopularError(this.message);
+}

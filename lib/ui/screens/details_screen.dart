@@ -103,10 +103,10 @@ class _DetailseState extends ConsumerState<DetailsScreen> {
                     fontWeight: FontWeight.bold),
               ),
               kVerticalSizedBoxXSmall,
-              Text("${personDetails.birthday ?? "Not Available"}",
+              Text(personDetails.birthday ?? "Not Available",
                   style: context.textTheme.button),
               kVerticalSizedBoxMedium,
-              Text(
+              const Text(
                 "Nationality",
                 style: TextStyle(
                     fontSize: 20,
@@ -114,7 +114,7 @@ class _DetailseState extends ConsumerState<DetailsScreen> {
                     fontWeight: FontWeight.bold),
               ),
               kVerticalSizedBoxXSmall,
-              Text("${personDetails.placeOfBirth ?? "USA"}",
+              Text(personDetails.placeOfBirth ?? "USA",
                   style: context.textTheme.button),
             ],
           ),
