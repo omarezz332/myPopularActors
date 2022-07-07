@@ -19,7 +19,7 @@ class PopularApi implements IPopularApi {
   @override
   Future<PopularPerson> getPopulars(int page)async {
     final url = Uri.parse(kAllPopular(page));
-    final response = await http.get(url);
+    final response = await http.get(url).timeout(const Duration(seconds: 10));
     final popularPerson = PopularPerson.fromJson(json.decode(response.body) as Map<String, dynamic>);
   return popularPerson;
   }
@@ -27,7 +27,7 @@ class PopularApi implements IPopularApi {
   @override
   Future<PersonDetails> getPopularsDetails(int personId) async{
     final url = Uri.parse(kPopularDetails(personId));
-    final response = await http.get(url);
+    final response = await http.get(url).timeout(const Duration(seconds: 10));
     final personDetails = PersonDetails.fromJson(json.decode(response.body) as Map<String, dynamic>);
     return personDetails;
 
@@ -36,7 +36,7 @@ class PopularApi implements IPopularApi {
   @override
   Future<PopularImage> getPopularsImage(int personId) async{
     final url = Uri.parse(kPopularImage(personId));
-    final response =await http.get(url);
+    final response =await http.get(url).timeout(const Duration(seconds: 10));
     final popularImage = PopularImage.fromJson(json.decode(response.body) as Map<String, dynamic>);
     return popularImage;
   }

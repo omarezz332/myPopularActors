@@ -51,12 +51,14 @@ class _DetailseState extends ConsumerState<DetailsScreen> {
   @override
   Widget build(BuildContext context) {
     var loading = ref.watch(detailsNotifierProvider) is DetailsLoading;
-
+    final state = ref.watch(detailsNotifierProvider);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.grey[800],
         body: loading
             ? const Center(child: CustomLoadingWidget())
+            : state is DetailsError
+                ? getErrorWidget( state.message)
             : _buildDetailsWidget(),
       ),
     );
@@ -285,6 +287,41 @@ class _DetailseState extends ConsumerState<DetailsScreen> {
           ),
         )
       ]),
+    );
+  }
+  Widget  getErrorWidget(String message) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            message,
+            style: const TextStyle(
+              height: 1.5,
+              color: Colors.white,
+              fontWeight: FontWeight.w900,
+              fontSize: 16.0,
+            ),
+          ),
+          kVerticalSizedBoxMedium,
+          OutlinedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+             // _pullRefresh();
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                context.theme.colorScheme.secondary,
+              ),
+              foregroundColor: MaterialStateProperty.all(
+                context.theme.colorScheme.primary,
+              ),
+            ),
+            child: const Text("Try Again"),
+          ),
+        ],
+      ),
     );
   }
 }

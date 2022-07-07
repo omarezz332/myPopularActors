@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_poupular_actors/data/remote/interfaces/i_populars_api.dart';
 import 'package:my_poupular_actors/models/core/popularImages.dart';
@@ -23,17 +25,31 @@ class DetailsNotifier extends StateNotifier<DetailsState> {
 
 
   Future<PersonDetails?> getPopularsDetails(int personId) async {
-    state=   const DetailsLoading();
-    PersonDetails personDetails= await _api.getPopularsDetails(personId);
-    state = const DetailsGot();
-    return personDetails;
+    try{
+      state=   const DetailsLoading();
+      PersonDetails personDetails= await _api.getPopularsDetails(personId);
+      state = const DetailsGot();
+      return personDetails;
+    }on SocketException{
+      state =  const DetailsError( 'No internet connection');
+    }catch(e){
+      state =  const DetailsError( 'something went wrong');
+    }
+
 
   }
   Future<PopularImage?> getPopularsImage(int personId) async {
-    state=  const DetailsLoading();
-    PopularImage popularImage= await _api.getPopularsImage(personId);
-    state = const DetailsGot();
-    return popularImage;
+    try{
+      state=  const DetailsLoading();
+      PopularImage popularImage= await _api.getPopularsImage(personId);
+      state = const DetailsGot();
+      return popularImage;
+
+    }on SocketException{
+      state =  const DetailsError( 'No internet connection');
+    }catch(e){
+      state =  const DetailsError( 'something went wrong');
+    }
 
   }
 }

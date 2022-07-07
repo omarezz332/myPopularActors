@@ -37,9 +37,6 @@ class PopularNotifier extends StateNotifier<PopularState> {
         await _popularProvider.setPopular(popularPerson);
       } else {
         //get data from locale.
-        PopularPerson popularPerson =
-        await _api.getPopulars( _popularProvider.page);
-        await _popularProvider.setPopular(popularPerson);
         await _popularProvider.getPopulars();
       }
       state = const PopularGot();
@@ -56,7 +53,9 @@ class PopularNotifier extends StateNotifier<PopularState> {
     //get more populars from remote
     try{
       state = const PopularLoading();
-      _popularProvider.morePages();
+      if (await CheckInternet.checkInternetConnection()) {
+        _popularProvider.morePages();
+      }
       PopularPerson popularPerson = await _api.getPopulars( _popularProvider.page);
       await _popularProvider.setPopular(popularPerson);
       state = const PopularGot();

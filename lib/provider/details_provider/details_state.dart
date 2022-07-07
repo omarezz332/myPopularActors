@@ -14,6 +14,9 @@ class DetailsLoading extends DetailsState {
 class DetailsGot extends DetailsState {
   const DetailsGot();
 
-
+}
+class DetailsError extends DetailsState {
+  final String message;
+  const DetailsError(this.message);
 }
 
